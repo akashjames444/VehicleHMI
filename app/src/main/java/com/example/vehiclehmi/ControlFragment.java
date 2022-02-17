@@ -1,3 +1,8 @@
+/**
+ * author@ Akhil_g_s & Anagha_lalu
+ * file - HMI - Control fragment
+ */
+
 package com.example.vehiclehmi;
 
 import android.content.Intent;
@@ -15,6 +20,7 @@ public class ControlFragment extends Fragment {
 
     public String vehicleModel ;
     ImageView imgCargo;
+    private View view;
 
     CardView screenOff, cargoCamera, rearView , trailerTyre , aux;
 
@@ -22,8 +28,31 @@ public class ControlFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_control, container, false);
+
+        view=inflater.inflate(R.layout.fragment_control, container, false);
+
+        getCasting();
+
+        VehicleModel();
+
+
+//  Intent to next page when 'trailer tyre' menu is clicked
+
+        trailerTyre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(), com.example.vehiclehmi.TrailerTire.class);
+                startActivity(intent);
+            }
+        });
+
+        return view;
+    }
+
+
+//  Method contains casting
+
+    private void getCasting() {
 
         screenOff =   view.findViewById(R.id.menu_screenOFF);
         cargoCamera = view.findViewById(R.id.menu_cargoCamera);
@@ -31,20 +60,11 @@ public class ControlFragment extends Fragment {
         aux = view.findViewById(R.id.menu_aux);
         imgCargo = view.findViewById(R.id.img_cargoCamera);
         trailerTyre = view.findViewById(R.id.trailerTirePressure);
-
-        VehicleModel();
-
-
-        trailerTyre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               Intent intent=new Intent(getContext(), com.example.vehiclehmi.TrailerTire.class);
-               startActivity(intent);
-            }
-        });
-        return view;
     }
 
+
+//  Method get vehicle model name from service
+//  according to the model, respective menu in control is set
 
     private void VehicleModel() {
         try {
@@ -56,7 +76,7 @@ public class ControlFragment extends Fragment {
                 imgCargo.setImageResource(R.drawable.ic_baseline_car);
             }
             else {
-               screenOff.setVisibility(View.INVISIBLE);
+                screenOff.setVisibility(View.INVISIBLE);
             }
 
         } catch (RemoteException e) {

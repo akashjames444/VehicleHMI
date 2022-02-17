@@ -24,7 +24,7 @@ public class SetingsFragment extends Fragment{
 
     public String vehicleModel ;
     public RecyclerView nRecycler;
-    int touchVal , displayVal, fuelVal, HlOnVal, HlOffVal;
+    int touchVal , displayVal, fuelVal;
     boolean touch,fuel,display;
 
     List<String> menu;
@@ -79,7 +79,6 @@ public class SetingsFragment extends Fragment{
 //  touchVal, displayVal, fuelVal are variables used to store the values of checkbox of respective menu from database
 //  based on these values boolean variables touch,display,fuel are initialized with true or false
 //  these boolean variables are passed to adapter and checkbox are set checked or unchecked when app is started
-//  HlOnVal and HlOffVal are variables for storing the current values of HlOn and HlOff menu from database
 
     private void MenuValue() {
 
@@ -99,18 +98,6 @@ public class SetingsFragment extends Fragment{
         display = displayVal != 0;
 
         touch = touchVal == 1;
-
-        try {
-            HlOnVal = MainActivity.getAidl().getValue("Display Brightness HL ON");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            HlOffVal = MainActivity.getAidl().getValue("Display Brightness HL OFF");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
 
     }
 
@@ -146,11 +133,11 @@ public class SetingsFragment extends Fragment{
         com.example.vehiclehmi.SettingsAdapter2 settingsAdapter2;
         if (vehicleModel.equals("M1")){
 
-            settingsAdapter2 = new com.example.vehiclehmi.SettingsAdapter2(getContext(), menu, vehicleModel, touch, display, fuel, HlOnVal, HlOffVal);
+            settingsAdapter2 = new com.example.vehiclehmi.SettingsAdapter2(getContext(), menu, vehicleModel, touch, display, fuel);
         }
         else {
 
-            settingsAdapter2 = new com.example.vehiclehmi.SettingsAdapter2(getContext(), menu, vehicleModel, touch, display, false, HlOnVal, HlOffVal);
+            settingsAdapter2 = new com.example.vehiclehmi.SettingsAdapter2(getContext(), menu, vehicleModel, touch, display, false);
         }
         LinearLayoutManager mLayoutManager=new LinearLayoutManager(getActivity());
         nRecycler.setLayoutManager(mLayoutManager);

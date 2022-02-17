@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/drawable-v24/ic_baseline_power_settings_new_24.xml" value="0.242" />
         <entry key="app/src/main/res/layout/activity_keypad.xml" value="0.33469202898550726" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33469202898550726" />
+        <entry key="app/src/main/res/layout/custom_hl_disabled.xml" value="0.333786231884058" />
         <entry key="app/src/main/res/layout/custom_row.xml" value="0.33469202898550726" />
         <entry key="app/src/main/res/layout/custom_row_second.xml" value="0.33469202898550726" />
         <entry key="app/src/main/res/layout/fragment_control.xml" value="0.33469202898550726" />

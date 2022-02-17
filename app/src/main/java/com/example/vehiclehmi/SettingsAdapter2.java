@@ -35,17 +35,13 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
     int HlOnVal, HlOffVal;
 
 
-    public SettingsAdapter2(Context context, List<String> menuItems, String vehicleModel, boolean touch, boolean display, boolean fuel, int HlOnVal, int HlOffVal) {
+    public SettingsAdapter2(Context context, List<String> menuItems, String vehicleModel, boolean touch, boolean display, boolean fuel) {
         this.context = context;
         this.Menu_items = menuItems;
         this.vehicleModel = vehicleModel;
         this.touch = touch;
         this.display = display;
         this.fuel = fuel;
-        this.HlOnVal = HlOnVal;
-        this.HlOffVal = HlOffVal;
-
-        HlOnOffSelector();
 
     }
 
@@ -59,8 +55,11 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
                 ||(Menu_items.get(position).equals("Display Mode Manual"))){
             return 0;
         }
-        return 1;
+        else {
+            return layoutSelector(position);
+        }
     }
+
 
 
     @NonNull
@@ -70,14 +69,21 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
         View view;
 
 //  for each menu its respective view types are set
-//  total 2 view types are required and so 2 layouts are used
+//  total 3 view types are required and so 3 layouts are used
+//  one viewType is for first 3 menu , second and third viewType are for last 2 menu based on their state
+//  based on the return value of display mode manual menu second and third viewTypes are selected
 
         if (viewType == 0){
             view = layoutInflater.inflate(R.layout.custom_row,parent,false);
             return new ViewHolderOne(view);
         }
-        view = layoutInflater.inflate(R.layout.custom_row_second,parent,false);
-        return new ViewHolderTwo(view);
+        else if (viewType == 1){
+            view = layoutInflater.inflate(R.layout.custom_row_second,parent,false);
+            return new ViewHolderTwo(view);
+        }else {
+            view = layoutInflater.inflate(R.layout.custom_hl_disabled,parent,false);
+            return new ViewHolderTwo(view);
+        }
 
     }
 
@@ -97,9 +103,10 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         if ((Menu_items.get(position).equals("Touch Screen Beep"))||(Menu_items.get(position).equals("Fuel Saver Display in Cluster"))
                 ||(Menu_items.get(position).equals("Display Mode Manual"))){
-            ViewHolderOne viewHolder = (ViewHolderOne) holder;
 
-            viewHolder.textview1.setText(Menu_items.get(position));
+            ViewHolderOne viewHolderOne = (ViewHolderOne) holder;
+
+            viewHolderOne.textview1.setText(Menu_items.get(position));
 
 //          For enabling the previous state of Checkbox of each menu by using values in SQLite database
 //          boolean variables touch,display,fuel are initialized and passed from settingsFragment
@@ -115,10 +122,10 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
             if (vehicleModel.equals("M1")){
                 boolean[] M1_cb = {touch,fuel,display};
-                viewHolder.checkBox.setChecked(M1_cb[position]);
+                viewHolderOne.checkBox.setChecked(M1_cb[position]);
             }else {
                 boolean[] M2_cb = {touch,display};
-                viewHolder.checkBox.setChecked(M2_cb[position]);
+                viewHolderOne.checkBox.setChecked(M2_cb[position]);
             }
 
 //          Enabling the Onclick listener when any menu is clicked
@@ -127,14 +134,14 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
 //          based on the checkbox state and menu clicked respective values are stored in database using AIDL
 
 
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            viewHolderOne.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
 
-                    viewHolder.checkBox.setChecked(!viewHolder.checkBox.isChecked());
+                    viewHolderOne.checkBox.setChecked(!viewHolderOne.checkBox.isChecked());
 
-                    menuID = (String) viewHolder.textview1.getText();
+                    menuID = (String) viewHolderOne.textview1.getText();
 
 //          This clause enables touch sound if touchScreen Beep is checked
 
@@ -150,7 +157,7 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
 //           updateDisplay() is an aidl function for storing the return value from service in database
 //           return value is stored to display the previous selected menu i.e HlON or HlOFF , on restarting the app
 
-                    if (viewHolder.checkBox.isChecked()){
+                    if (viewHolderOne.checkBox.isChecked()){
 
                         if (menuID.equals("Display Mode Manual")){
 
@@ -174,12 +181,15 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                             Toast.makeText(context, "return value  "+ displayReturn, Toast.LENGTH_SHORT).show();
 
-//                   HlOnOffControl() is function created for enabling or disabling the HlOn and HlOff menu based on return value from service
+//                   notifyItemChanged() is used  for enabling or disabling the HlOn and HlOff menu based on return value from service
 
                             display = true;
-                            int pos = viewHolder.getAdapterPosition();
+                            int pos = viewHolderOne.getAdapterPosition();
+                            int HlOnPos = pos + 1;
+                            int HlOffPos = pos + 2;
 
-                            HlOnOffControl(displayReturn,pos);
+                            notifyItemChanged(HlOnPos);
+                            notifyItemChanged(HlOffPos);
 
                         }
 
@@ -209,12 +219,15 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 e.printStackTrace();
                             }
 
-//                   HlOnOffControl() is function created for enabling or disabling the HlOn and HlOff menu based on return value from service
+//                   notifyItemChanged() is used  for enabling or disabling the HlOn and HlOff menu based on return value from service
 
                             display = false;
-                            int pos = viewHolder.getAdapterPosition();
+                            int pos = viewHolderOne.getAdapterPosition();
+                            int HlOnPos = pos + 1;
+                            int HlOffPos = pos + 2;
 
-                            HlOnOffControl(-1,pos);
+                            notifyItemChanged(HlOnPos);
+                            notifyItemChanged(HlOffPos);
 
                         }
 
@@ -251,46 +264,44 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         else if (((Menu_items.get(position).equals("Display Brightness HL ON"))||(Menu_items.get(position).equals("Display Brightness HL OFF")))){
 
-            ViewHolderTwo viewHolder = (ViewHolderTwo) holder;
-            viewHolder.textview2.setText(Menu_items.get(position));
+            ViewHolderTwo viewHolderTwo = (ViewHolderTwo) holder;
+            viewHolderTwo.textview2.setText(Menu_items.get(position));
 
-//      This clauses is used for enabling and disabling the HlOn and HlOff menu
-//      its done based on the checkbox state of display mode manual' menu and HlOnOffControl function
+//       This is to set the current values of HlOn and HlOff menu
 
-            if (!display){
-                viewHolder.linearLayout.setVisibility(View.GONE);
+            HlValuesFinder();
 
+            if (Menu_items.get(position).equals("Display Brightness HL ON")){
+                viewHolderTwo.textview3.setText(""+HlOnVal);
             }
-            else {
-                viewHolder.linearLayout.setVisibility(View.VISIBLE);
-
+            else if (Menu_items.get(position).equals("Display Brightness HL OFF")){
+                viewHolderTwo.textview3.setText(""+HlOffVal);
             }
+
 
 //      based on the vehicle model min , max and default values of HlOn and HlOff menu are initialized
 
             if (vehicleModel.equals("M1")){
-                max = 7;  min = 0; defaultVal = 3;
+                max = 7;  min = 0;
             }else {
-                max = 9;  min = 0; defaultVal = 5;
+                max = 9;  min = 0;
             }
 
 
-            viewHolder.textview3.setText(""+defaultVal);
-
-            viewHolder.imageButton1.setOnClickListener(new View.OnClickListener() {
+            viewHolderTwo.imageButton1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if (Integer.parseInt(viewHolder.textview3.getText().toString()) ==min && touchValue == 1){
+                    if (Integer.parseInt(viewHolderTwo.textview3.getText().toString()) ==min && touchValue == 1){
                         mp.start();
                     }
 
-                    if (Integer.parseInt(viewHolder.textview3.getText().toString()) >min) {
-                        String newText = Integer.toString(Integer.parseInt(viewHolder.textview3.getText().toString())-1);
-                        viewHolder.textview3.setText(newText);
+                    if (Integer.parseInt(viewHolderTwo.textview3.getText().toString()) >min) {
+                        String newText = Integer.toString(Integer.parseInt(viewHolderTwo.textview3.getText().toString())-1);
+                        viewHolderTwo.textview3.setText(newText);
 
-                        HLvalue = Integer.parseInt(viewHolder.textview3.getText().toString());
-                        menuID = viewHolder.textview2.getText().toString();
+                        HLvalue = Integer.parseInt(viewHolderTwo.textview3.getText().toString());
+                        menuID = viewHolderTwo.textview2.getText().toString();
 
                         try {
                             MainActivity.getAidl().updateValues(menuID,HLvalue);
@@ -302,21 +313,21 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
 
             });
-            viewHolder.imageButton2.setOnClickListener(new View.OnClickListener() {
+            viewHolderTwo.imageButton2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if (Integer.parseInt(viewHolder.textview3.getText().toString()) ==max && touchValue == 1){
+                    if (Integer.parseInt(viewHolderTwo.textview3.getText().toString()) ==max && touchValue == 1){
                         mp.start();
                     }
 
-                    if (Integer.parseInt(viewHolder.textview3.getText().toString()) <max) {
+                    if (Integer.parseInt(viewHolderTwo.textview3.getText().toString()) <max) {
 
-                        String newText = Integer.toString(Integer.parseInt(viewHolder.textview3.getText().toString()) + 1);
-                        viewHolder.textview3.setText(newText);
+                        String newText = Integer.toString(Integer.parseInt(viewHolderTwo.textview3.getText().toString()) + 1);
+                        viewHolderTwo.textview3.setText(newText);
 
-                        HLvalue = Integer.parseInt(viewHolder.textview3.getText().toString());
-                        menuID = viewHolder.textview2.getText().toString();
+                        HLvalue = Integer.parseInt(viewHolderTwo.textview3.getText().toString());
+                        menuID = viewHolderTwo.textview2.getText().toString();
 
                         try {
                             MainActivity.getAidl().updateValues(menuID,HLvalue);
@@ -331,59 +342,55 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         }
 
+    }
+
+//  This function is used to get the current values of HlOn and HlOff menu in database using Aidl
+//  HlOnVal and HlOffVal are variables for storing the current values of HlOn and HlOff menu from database
+
+    private void HlValuesFinder() {
+
+        try {
+            HlOnVal = MainActivity.getAidl().getValue("Display Brightness HL ON");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            HlOffVal = MainActivity.getAidl().getValue("Display Brightness HL OFF");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
 //  This function is used to enable disable HlOn and HlOff menu
 //  based on the return values from service respective menu either HlOn or HlOff is enabled
-//  notifyItemChanged() is used to notify the respective menu
+//  return value from service is stored in database, that value is called here
 //  if return value is 1 - HlOn is enabled , if value is 0 - HlOff is enabled , if value is -1 - both are disabled
+//  this function also maintain the previous states of HlOn and HlOff when app is restarted
+//  this function basically return the viewType and its validated in onCreateViewHolder
 
 
-    private void HlOnOffControl(int value,int pos) {
-        int newPosition = pos + 1;
-        switch (value){
-            case 0:
-                Menu_items.set(newPosition,"Display Brightness HL OFF");
-                notifyItemChanged(newPosition);
-                break;
-            case 1:
-                Menu_items.set(newPosition,"Display Brightness HL ON");
-                notifyItemChanged(newPosition);
-                break;
-            case -1:
-                if (vehicleModel.equals("M1")){
-                    notifyItemChanged(3);
-                    notifyItemChanged(4);
-                }else if (vehicleModel.equals("M2")){
-                    notifyItemChanged(2);
-                    notifyItemChanged(3);
-                }break;
+    private int layoutSelector(int position) {
+
+        int d = 0;
+
+        try {
+            d = MainActivity.getAidl().getDisplay();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
 
-    }
-
-//  This function is used to display either HlOn or HlOf on restarting the app
-//  it first check whether checkbox of 'display mode manual' is checked or not
-//  if it is checked then it get the displayReturn value from database
-//  the value stored in database is the return value from service after random number is generated
-//  so based on this value from database either HlOn or HlOff is made visible
-
-    private void HlOnOffSelector() {
-        if (display){
-            int d = 0;
-
-            try {
-                d = MainActivity.getAidl().getDisplay();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-
-            if (d == 0){
-                Menu_items.remove("Display Brightness HL ON");
-            }else{
-                Menu_items.remove("Display Brightness HL OFF");
-            }
+        if (display && d == 1){
+            if ((Menu_items.get(position).equals("Display Brightness HL ON"))){
+                return 1;
+            }else return 2;
         }
+        else if (display && d == 0){
+            if ((Menu_items.get(position).equals("Display Brightness HL OFF"))){
+                return 1;
+            }else return 2;
+        }
+        else return 2;
     }
 
 
@@ -391,6 +398,7 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
     public int getItemCount() {
         return Menu_items.size();
     }
+
 
 
 
