@@ -7,7 +7,6 @@ package com.example.vehiclehmi.View;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -21,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.vehiclehmi.Presenter.Presenter;
 import com.example.vehiclehmi.R;
 
-public class Keypad extends AppCompatActivity implements View.OnClickListener, IKeypad {
+public class Keypad extends AppCompatActivity implements View.OnClickListener {
 
 
     Button Button0, Button1,Button2, Button3, Button4, Button5 ,Button6, Button7, Button8,Button9,ButtonDone;

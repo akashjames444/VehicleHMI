@@ -6,7 +6,6 @@
 package com.example.vehiclehmi.View;
 
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ import com.example.vehiclehmi.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetingsFragment extends Fragment implements ISettingsFragment{
+public class SetingsFragment extends Fragment {
 
 
     public String vehicleModel ;

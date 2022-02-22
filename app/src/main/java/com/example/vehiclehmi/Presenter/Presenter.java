@@ -1,46 +1,46 @@
 package com.example.vehiclehmi.Presenter;
 
 import com.example.vehiclehmi.Model.Model;
-import com.example.vehiclehmi.View.IControlFragment;
-import com.example.vehiclehmi.View.IKeypad;
-import com.example.vehiclehmi.View.ISettingsAdapter;
-import com.example.vehiclehmi.View.ISettingsFragment;
-import com.example.vehiclehmi.View.ITrailerTire;
+import com.example.vehiclehmi.View.ControlFragment;
+import com.example.vehiclehmi.View.Keypad;
+import com.example.vehiclehmi.View.SettingsAdapter2;
+import com.example.vehiclehmi.View.SetingsFragment;
+import com.example.vehiclehmi.View.TrailerTire;
 
 public class Presenter implements IPresenter{
 
     Model model;
 
 
-    ITrailerTire iTrailerTire;
-    IKeypad iKeypad;
-    ISettingsFragment iSettingsFragment;
-    IControlFragment iControlFragment;
-    ISettingsAdapter iSettingsAdapter;
+    TrailerTire trailerTire;
+    Keypad keypad;
+    SetingsFragment settingsFragment;
+    ControlFragment controlFragment;
+    SettingsAdapter2 settingsAdapter;
     Presenter presenter;
 
-    public Presenter(ITrailerTire iTrailerTire) {
-        this.iTrailerTire = iTrailerTire;
+    public Presenter(TrailerTire trailerTire) {
+        this.trailerTire = trailerTire;
         model = new Model(presenter);
     }
 
-    public Presenter(IKeypad iKeypad) {
-        this.iKeypad = iKeypad;
+    public Presenter(Keypad keypad) {
+        this.keypad = keypad;
         model = new Model(presenter);
 
     }
 
-    public Presenter(ISettingsFragment iSettingsFragment) {
-        this.iSettingsFragment=iSettingsFragment;
+    public Presenter(SetingsFragment settingsFragment) {
+        this.settingsFragment=settingsFragment;
         model = new Model(presenter);
     }
 
-    public Presenter(IControlFragment iControlFragment) {
-        this.iControlFragment = iControlFragment;
+    public Presenter(ControlFragment controlFragment) {
+        this.controlFragment = controlFragment;
         model = new Model(presenter);
     }
-    public Presenter(ISettingsAdapter iSettingsAdapter) {
-        this.iSettingsAdapter = iSettingsAdapter;
+    public Presenter(SettingsAdapter2 settingsAdapter) {
+        this.settingsAdapter = settingsAdapter;
         model = new Model(presenter);
     }
 

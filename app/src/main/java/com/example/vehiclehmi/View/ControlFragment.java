@@ -7,7 +7,6 @@ package com.example.vehiclehmi.View;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.vehiclehmi.Presenter.Presenter;
 import com.example.vehiclehmi.R;
 
-public class ControlFragment extends Fragment implements IControlFragment {
+public class ControlFragment extends Fragment {
 
     public String vehicleModel ;
     ImageView imgCargo;

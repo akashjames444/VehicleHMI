@@ -8,7 +8,6 @@ package com.example.vehiclehmi.View;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,7 @@ import com.example.vehiclehmi.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ISettingsAdapter{
+public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private int displayReturn ,max,min,HLvalue, touchValue,defaultVal,cbValue;
     public String vehicleModel,menuID;
