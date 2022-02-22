@@ -3,7 +3,7 @@
  * file- HMI app SettingsFragment
  */
 
-package com.example.vehiclehmi;
+package com.example.vehiclehmi.View;
 
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -16,16 +16,20 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vehiclehmi.Presenter.Presenter;
+import com.example.vehiclehmi.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetingsFragment extends Fragment{
+public class SetingsFragment extends Fragment implements ISettingsFragment{
 
 
     public String vehicleModel ;
     public RecyclerView nRecycler;
     int touchVal , displayVal, fuelVal;
     boolean touch,fuel,display;
+    Presenter presenter;
 
     List<String> menu;
 
@@ -36,6 +40,7 @@ public class SetingsFragment extends Fragment{
         View view= inflater.inflate(R.layout.fragment_settings,container,false);
 
         nRecycler=view.findViewById(R.id.recycler_view);
+        presenter=new Presenter(this);
 
 
         if (MainActivity.getAidl() != null){
@@ -82,17 +87,10 @@ public class SetingsFragment extends Fragment{
 
     private void MenuValue() {
 
-        try {
-            touchVal = MainActivity.getAidl().getValue("Touch Screen Beep");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        touchVal=presenter.value("Touch Screen Beep");
 
-        try {
-            displayVal = MainActivity.getAidl().getValue("Display Mode Manual");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        displayVal = presenter.value("Display Mode Manual");
+
 
 //      based on the values from database boolean variables are initialized
         display = displayVal != 0;
@@ -101,28 +99,25 @@ public class SetingsFragment extends Fragment{
 
     }
 
+
 //  This function is used to find the vehicleModel from service using aidl
 //  this model name is also passed to adapter
 //  fuelVal is only present in M1 model , so it works only if vehicleModel is M1
 
     private void VehicleModel() {
-        try {
-            vehicleModel = MainActivity.aidlObject.vehicleModel();
-            //Toast.makeText(getContext(), ""+vehicleModel, Toast.LENGTH_SHORT).show();
 
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        vehicleModel = presenter.model();
+        //Toast.makeText(getContext(), ""+vehicleModel, Toast.LENGTH_SHORT).show();
+
+
 
         if (vehicleModel.equals("M1")){
-            try {
-                fuelVal = MainActivity.getAidl().getValue("Fuel Saver Display in Cluster");
 
-                fuel = fuelVal != 0;
+            fuelVal = presenter.value("Fuel Saver Display in Cluster");
 
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+            fuel = fuelVal != 0;
+
+
         }
     }
 
@@ -130,14 +125,14 @@ public class SetingsFragment extends Fragment{
 
     private void SetRecycler() {
 
-        com.example.vehiclehmi.SettingsAdapter2 settingsAdapter2;
+        SettingsAdapter2 settingsAdapter2;
         if (vehicleModel.equals("M1")){
 
-            settingsAdapter2 = new com.example.vehiclehmi.SettingsAdapter2(getContext(), menu, vehicleModel, touch, display, fuel);
+            settingsAdapter2 = new SettingsAdapter2(getContext(), menu, vehicleModel, touch, display, fuel);
         }
         else {
 
-            settingsAdapter2 = new com.example.vehiclehmi.SettingsAdapter2(getContext(), menu, vehicleModel, touch, display, false);
+            settingsAdapter2 = new SettingsAdapter2(getContext(), menu, vehicleModel, touch, display, false);
         }
         LinearLayoutManager mLayoutManager=new LinearLayoutManager(getActivity());
         nRecycler.setLayoutManager(mLayoutManager);

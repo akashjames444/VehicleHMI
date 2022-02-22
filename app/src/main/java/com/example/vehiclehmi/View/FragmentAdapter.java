@@ -1,4 +1,4 @@
-package com.example.vehiclehmi;
+package com.example.vehiclehmi.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,12 +17,12 @@ public class FragmentAdapter extends FragmentStateAdapter {
 
         switch (position){
             case 0:
-                return new com.example.vehiclehmi.SetingsFragment();
+                return new SetingsFragment();
             case 1:
-                return  new com.example.vehiclehmi.ControlFragment();
+                return  new ControlFragment();
         }
 
-        return new com.example.vehiclehmi.SetingsFragment();
+        return new SetingsFragment();
     }
 
     @Override

@@ -3,7 +3,7 @@
  * file - HMI app - trailer tyre
  */
 
-package com.example.vehiclehmi;
+package com.example.vehiclehmi.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class TrailerTire extends AppCompatActivity {
+import com.example.vehiclehmi.Presenter.Presenter;
+import com.example.vehiclehmi.R;
+
+public class TrailerTire extends AppCompatActivity implements ITrailerTire{
 
 
     Button btnNext;
@@ -28,6 +31,9 @@ public class TrailerTire extends AppCompatActivity {
     int axleValue,tyreValue,max,min,diff,rbValue = 1,targetVal;
     RadioGroup rgUnit;
     RadioButton rb_psi,rb_kpa;
+
+
+    Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,7 @@ public class TrailerTire extends AppCompatActivity {
 
         otherButtonFunctions();
 
+        presenter = new Presenter(this);
 
     }
 
@@ -170,11 +177,8 @@ public class TrailerTire extends AppCompatActivity {
             public void onClick(View v) {
                 rbValue = 1;
 
-                try {
-                    MainActivity.getAidl().updateControl("unit",1);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
+                presenter.updateControl("unit",1);
+
 
             }
         });
@@ -186,11 +190,8 @@ public class TrailerTire extends AppCompatActivity {
             public void onClick(View v) {
                 rbValue = 2;
 
-                try {
-                    MainActivity.getAidl().updateControl("unit",2);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
+                presenter.updateControl("unit",2);
+
 
 
             }
@@ -221,11 +222,7 @@ public class TrailerTire extends AppCompatActivity {
 //  Method used to get the target value from database for displaying in keypad page
 
     private void target() {
-        try {
-            targetVal = MainActivity.getAidl().getTarget();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        targetVal=presenter.target();
     }
 
 
@@ -284,5 +281,6 @@ public class TrailerTire extends AppCompatActivity {
                 break;
         }
     }
+
 
 }

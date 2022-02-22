@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:padding="30dp"
     android:background="@drawable/gradient_colour"
-    tools:context=".MainActivity">
+    tools:context=".View.MainActivity">
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"

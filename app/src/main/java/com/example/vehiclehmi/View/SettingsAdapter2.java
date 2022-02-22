@@ -3,7 +3,7 @@
  * file -HMI app  SettingsAdapter
  */
 
-package com.example.vehiclehmi;
+package com.example.vehiclehmi.View;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,14 +21,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vehiclehmi.Presenter.Presenter;
+import com.example.vehiclehmi.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ISettingsAdapter{
 
     private int displayReturn ,max,min,HLvalue, touchValue,defaultVal,cbValue;
     public String vehicleModel,menuID;
     boolean touch,fuel,display;
+    Presenter presenter;
 
     Context context;
     List<String> Menu_items = new ArrayList<>();
@@ -67,6 +71,7 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view;
+        presenter=new Presenter(this);
 
 //  for each menu its respective view types are set
 //  total 3 view types are required and so 3 layouts are used
@@ -161,23 +166,12 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                         if (menuID.equals("Display Mode Manual")){
 
-                            try {
-                                displayReturn = MainActivity.getAidl().menuClick(menuID,1);
-                            } catch (RemoteException e) {
-                                e.printStackTrace();
-                            }
 
-                            try {
-                                MainActivity.getAidl().updateValues(menuID,1);
-                            } catch (RemoteException e) {
-                                e.printStackTrace();
-                            }
+                            displayReturn = presenter.menuClick(menuID,1);
 
-                            try {
-                                MainActivity.getAidl().updateDisplay(displayReturn);
-                            } catch (RemoteException e) {
-                                e.printStackTrace();
-                            }
+                            presenter.updateValues(menuID,1);
+
+                            presenter.updateDisplay(displayReturn);
 
                             Toast.makeText(context, "return value  "+ displayReturn, Toast.LENGTH_SHORT).show();
 
@@ -195,11 +189,9 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                         else {
 
-                            try {
-                                MainActivity.getAidl().updateValues(menuID,1);
-                            } catch (RemoteException e) {
-                                e.printStackTrace();
-                            }
+
+                            presenter.updateValues(menuID,1);
+
 
                             if (menuID.equals("Touch Screen Beep")){
                                 touchValue = 1;
@@ -213,11 +205,9 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
                     else {
 
                         if (menuID.equals("Display Mode Manual")){
-                            try {
-                                MainActivity.getAidl().updateValues(menuID,0);
-                            } catch (RemoteException e) {
-                                e.printStackTrace();
-                            }
+
+                            presenter.updateValues(menuID,0);
+
 
 //                   notifyItemChanged() is used  for enabling or disabling the HlOn and HlOff menu based on return value from service
 
@@ -234,20 +224,15 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
 //                   Since 'Touch Screen Beep' menu default value depends on vehicle model extra elseIf () is used
 
                         else if (menuID.equals("Touch Screen Beep") && vehicleModel.equals("M1")){
-                            try {
-                                MainActivity.getAidl().updateValues(menuID,2);
-                            } catch (RemoteException e) {
-                                e.printStackTrace();
-                            }
+                            presenter.updateValues(menuID,2);
+
                             touchValue = 0;
                         }
 
                         else {
-                            try {
-                                MainActivity.getAidl().updateValues(menuID,0);
-                            } catch (RemoteException e) {
-                                e.printStackTrace();
-                            }
+
+                            presenter.updateValues(menuID,0);
+
                             if (menuID.equals("Touch Screen Beep")){
                                 touchValue = 0;
                             }
@@ -303,11 +288,9 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
                         HLvalue = Integer.parseInt(viewHolderTwo.textview3.getText().toString());
                         menuID = viewHolderTwo.textview2.getText().toString();
 
-                        try {
-                            MainActivity.getAidl().updateValues(menuID,HLvalue);
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
+
+                        presenter.updateValues(menuID,HLvalue);
+
 
                     }
                 }
@@ -329,11 +312,8 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
                         HLvalue = Integer.parseInt(viewHolderTwo.textview3.getText().toString());
                         menuID = viewHolderTwo.textview2.getText().toString();
 
-                        try {
-                            MainActivity.getAidl().updateValues(menuID,HLvalue);
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
+                        presenter.updateValues(menuID,HLvalue);
+
 
                     }
                 }
@@ -349,17 +329,11 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private void HlValuesFinder() {
 
-        try {
-            HlOnVal = MainActivity.getAidl().getValue("Display Brightness HL ON");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
 
-        try {
-            HlOffVal = MainActivity.getAidl().getValue("Display Brightness HL OFF");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        HlOnVal = presenter.value("Display Brightness HL ON");
+
+        HlOffVal = presenter.value("Display Brightness HL OFF");
+
     }
 
 //  This function is used to enable disable HlOn and HlOff menu
@@ -374,11 +348,9 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         int d = 0;
 
-        try {
-            d = MainActivity.getAidl().getDisplay();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+
+        d = presenter.getDisplay();
+
 
         if (display && d == 1){
             if ((Menu_items.get(position).equals("Display Brightness HL ON"))){
@@ -398,7 +370,6 @@ public class SettingsAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHold
     public int getItemCount() {
         return Menu_items.size();
     }
-
 
 
 

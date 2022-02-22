@@ -3,7 +3,7 @@
  * file- HMI app MainActivity,java
  */
 
-package com.example.vehiclehmi;
+package com.example.vehiclehmi.View;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +21,8 @@ import android.os.IBinder;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.example.vehiclehmi.R;
+import com.example.vehiclehmi.View.FragmentAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;

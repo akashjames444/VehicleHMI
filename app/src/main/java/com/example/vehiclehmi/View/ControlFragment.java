@@ -3,7 +3,7 @@
  * file - HMI - Control fragment
  */
 
-package com.example.vehiclehmi;
+package com.example.vehiclehmi.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,11 +16,15 @@ import android.widget.ImageView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-public class ControlFragment extends Fragment {
+import com.example.vehiclehmi.Presenter.Presenter;
+import com.example.vehiclehmi.R;
+
+public class ControlFragment extends Fragment implements IControlFragment {
 
     public String vehicleModel ;
     ImageView imgCargo;
     private View view;
+    Presenter presenter;
 
     CardView screenOff, cargoCamera, rearView , trailerTyre , aux;
 
@@ -30,10 +34,12 @@ public class ControlFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view=inflater.inflate(R.layout.fragment_control, container, false);
+        presenter=new Presenter(this);
 
         getCasting();
 
         VehicleModel();
+
 
 
 //  Intent to next page when 'trailer tyre' menu is clicked
@@ -41,7 +47,7 @@ public class ControlFragment extends Fragment {
         trailerTyre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getContext(), com.example.vehiclehmi.TrailerTire.class);
+                Intent intent=new Intent(getContext(), TrailerTire.class);
                 startActivity(intent);
             }
         });
@@ -67,21 +73,19 @@ public class ControlFragment extends Fragment {
 //  according to the model, respective menu in control is set
 
     private void VehicleModel() {
-        try {
-            vehicleModel = MainActivity.getAidl().vehicleModel();
-            //Toast.makeText(getContext(), ""+vehicleModel, Toast.LENGTH_SHORT).show();
-            if (vehicleModel.equals("M1")){
-                trailerTyre.setVisibility(View.INVISIBLE);
-                aux.setVisibility(View.INVISIBLE);
-                imgCargo.setImageResource(R.drawable.ic_baseline_car);
-            }
-            else {
-                screenOff.setVisibility(View.INVISIBLE);
-            }
 
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        vehicleModel = presenter.model();
+        //Toast.makeText(getContext(), ""+vehicleModel, Toast.LENGTH_SHORT).show();
+        if (vehicleModel.equals("M1")){
+            trailerTyre.setVisibility(View.INVISIBLE);
+            aux.setVisibility(View.INVISIBLE);
+            imgCargo.setImageResource(R.drawable.ic_baseline_car);
         }
+        else {
+            screenOff.setVisibility(View.INVISIBLE);
+        }
+
+
     }
 
 

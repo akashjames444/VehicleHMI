@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ControlFragment"
+    tools:context=".View.ControlFragment"
     android:background="@drawable/gradient_colour"
     android:orientation="vertical">
 

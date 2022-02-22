@@ -3,7 +3,7 @@
  * file@ Keypad.java
  */
 
-package com.example.vehiclehmi;
+package com.example.vehiclehmi.View;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -15,11 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Keypad extends AppCompatActivity implements View.OnClickListener {
+import com.example.vehiclehmi.Presenter.Presenter;
+import com.example.vehiclehmi.R;
+
+public class Keypad extends AppCompatActivity implements View.OnClickListener, IKeypad {
 
 
     Button Button0, Button1,Button2, Button3, Button4, Button5 ,Button6, Button7, Button8,Button9,ButtonDone;
@@ -28,11 +30,13 @@ public class Keypad extends AppCompatActivity implements View.OnClickListener {
     int number,rbValue,targetValue;
     double psiConstant = 6.894757;
     EditText editText1;
+    Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_keypad);
+
 
         get_Casting();
 
@@ -46,6 +50,7 @@ public class Keypad extends AppCompatActivity implements View.OnClickListener {
         Button7.setOnClickListener(this);
         Button8.setOnClickListener(this);
         Button9.setOnClickListener(this);
+        presenter = new Presenter(this);
 
         targetValue = Integer.parseInt(getIntent().getStringExtra("target"));
         rbValue = Integer.parseInt(getIntent().getStringExtra("rbValue"));
@@ -170,25 +175,19 @@ public class Keypad extends AppCompatActivity implements View.OnClickListener {
             public void onClick(View v) {
                 number = Integer.parseInt(editText1.getText().toString());
                 editText1.setText("");
-
                 if (rbValue == 1){
-                    try {
-                        MainActivity.getAidl().updateControl("target",number);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
+                    presenter.updateControl("target",number);
                     tvTarget.setText("Current target is " + number + "PSI");
+
                 }
                 else if (rbValue==2){
                     int num = Integer.parseInt(""+Math.round(number/psiConstant));
-                    try {
-                        MainActivity.getAidl().updateControl("target",num);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-
+                    presenter.updateControl("target",num);
                     tvTarget.setText("Current target is " + number + " kpa");
                 }
+
+
+
             }
         });
 
@@ -239,6 +238,7 @@ public class Keypad extends AppCompatActivity implements View.OnClickListener {
 
         }
     }
+
 
 }
 
