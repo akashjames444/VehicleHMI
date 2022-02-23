@@ -55,12 +55,11 @@ public class TrailerTire extends AppCompatActivity {
 
     }
 
-
-//  Method contains functions of other buttons like Back and Next
-
+    /**
+     * @brief   Button next to navigate to keypad screen
+     *          Button back to navigate to previous screen that is the control tab
+     */
     private void otherButtonFunctions() {
-
-//  Button next to navigate to keypad screen
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,8 +75,6 @@ public class TrailerTire extends AppCompatActivity {
             }
         });
 
-//  Button back to navigate to previous screen that is the control tab
-
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,11 +83,13 @@ public class TrailerTire extends AppCompatActivity {
         });
     }
 
-
-    //  Method contains tyre button functions like '+' and '-'
+    /**
+     * @brief Method contains tyre button functions like '+' and '-'
+     *      btnTyreMinus  that is used to reduce the Tyre number
+     *      btnTyrePlus  that is used to increase the Tyre number
+     */
     private void tyreButtonFunctions() {
 
-//  Image button that is used to reduce the Tyre number
 
         btnTyreMinus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,8 +104,6 @@ public class TrailerTire extends AppCompatActivity {
             }
         });
 
-
-//  Image button that is used to increase the Tyre number
 
         btnTyrePlus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,12 +120,13 @@ public class TrailerTire extends AppCompatActivity {
         });
     }
 
-
-//  Method contains axle button functions like '+' and '-'
-
+    /**
+     * @brief Method contains axle button functions like '+' and '-'
+     *        btnAxleMinus that is used to reduce the axle number
+     *        btnAxlePlus that is used to increase the axle number
+     */
     private void axleButtonFunctions() {
 
-//  Image button that is used to reduce the axle number
 
         btnAxleMinus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,8 +142,6 @@ public class TrailerTire extends AppCompatActivity {
             }
         });
 
-
-//  Image button that is used to increase the axle number
 
         btnAxlePlus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,12 +160,15 @@ public class TrailerTire extends AppCompatActivity {
         });
     }
 
-
-//  Method contains radioButton functions
+    /**
+     * @brief   Method contains radioButton functions
+     *          Radio button  rb_psi which is used to select the pressure unit(psi)
+     *          Radio button  rb_kpa which is used to select the pressure unit(kPa)
+     */
 
     private void radioButtonFunction() {
 
-//  Radio button which is used to select the pressure unit(kPa)
+
 
         rb_psi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,7 +181,7 @@ public class TrailerTire extends AppCompatActivity {
             }
         });
 
-//  Radio button which is used to select the pressure unit(kPa)
+
 
         rb_kpa.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,8 +196,9 @@ public class TrailerTire extends AppCompatActivity {
         });
     }
 
-//  method for casting
-
+    /**
+     * @brief method for casting all the fields
+     */
     private void getItemcast() {
 
         btnNext = findViewById(R.id.btn_next);
@@ -217,18 +217,20 @@ public class TrailerTire extends AppCompatActivity {
 
     }
 
-
-//  Method used to get the target value from database for displaying in keypad page
-
+    /**
+     * @brief   Method used to get the target value from database for displaying in keypad page
+     */
     private void target() {
         targetVal=presenter.target();
     }
 
+    /**
+     * @brief   method to set the image with respect to the combination of axle and tyre
+     *          there are 3 axle value (1,2 and 3)
+     *          each axle value have two different tyre value combination
+     *          image is set according to the combination
+     */
 
-//  method to set the image with respect to the combination of axle and tyre
-//  there are 3 axle value (1,2 and 3)
-//  each axle value have two different tyre value combination
-//  image is set according to the combination
 
     private void imageId() {
         tyreValue = Integer.parseInt(tv_tyre.getText().toString());
@@ -260,9 +262,10 @@ public class TrailerTire extends AppCompatActivity {
     }
 
 
-//  method used to change the select the tyre combo based on the axle value
-//  total there are 3 axle value and each value has 2 tyre combinations
-
+    /**
+     * @brief method used to change the select the tyre combo based on the axle value
+     *        total there are 3 axle value and each value has 2 tyre combinations
+     */
     private void axleValue() {
         axleValue = Integer.parseInt(tv_axle.getText().toString());
         switch (axleValue){

@@ -21,7 +21,7 @@ import com.example.vehiclehmi.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetingsFragment extends Fragment {
+public class SettingsFragment extends Fragment {
 
 
     public String vehicleModel ;
@@ -58,7 +58,9 @@ public class SetingsFragment extends Fragment {
     }
 
 
-//  This function is to add menu items to arraylist based on the vehicle model
+    /**
+     * @brief Method used to add menu items to arraylist based on the vehicle model
+     */
 
     private void MenuItems() {
 
@@ -78,11 +80,13 @@ public class SetingsFragment extends Fragment {
         }
     }
 
-//  This function is used to get the values of each menu in database using Aidl
-//  these values are used for setting the state of each checkbox
-//  touchVal, displayVal, fuelVal are variables used to store the values of checkbox of respective menu from database
-//  based on these values boolean variables touch,display,fuel are initialized with true or false
-//  these boolean variables are passed to adapter and checkbox are set checked or unchecked when app is started
+
+    /**
+     * @brief Method used to get the default values of each menu from database
+     * @brief These values are used for setting the state of each checkbox
+     * @brief touchVal, displayVal, fuelVal are variables used for storing these values
+     * @brief based on the values from database these variables are initialized
+     */
 
     private void MenuValue() {
 
@@ -90,8 +94,6 @@ public class SetingsFragment extends Fragment {
 
         displayVal = presenter.value("Display Mode Manual");
 
-
-//      based on the values from database boolean variables are initialized
         display = displayVal != 0;
 
         touch = touchVal == 1;
@@ -99,16 +101,14 @@ public class SetingsFragment extends Fragment {
     }
 
 
-//  This function is used to find the vehicleModel from service using aidl
-//  this model name is also passed to adapter
-//  fuelVal is only present in M1 model , so it works only if vehicleModel is M1
+    /**
+     * @brief Method used to find the vehicleModel from service
+     * @brief fuel saver display menu is only in M1 models
+     */
 
     private void VehicleModel() {
 
         vehicleModel = presenter.model();
-        //Toast.makeText(getContext(), ""+vehicleModel, Toast.LENGTH_SHORT).show();
-
-
 
         if (vehicleModel.equals("M1")){
 
@@ -120,18 +120,21 @@ public class SetingsFragment extends Fragment {
         }
     }
 
-//  This function is used to set the adapter and also pass the values based on the vehicleModel
+
+    /**
+     * @brief Method used to set the adapter and also pass the values based on the vehicleModel
+     */
 
     private void SetRecycler() {
 
-        SettingsAdapter2 settingsAdapter2;
+        SettingsAdapter settingsAdapter2;
         if (vehicleModel.equals("M1")){
 
-            settingsAdapter2 = new SettingsAdapter2(getContext(), menu, vehicleModel, touch, display, fuel);
+            settingsAdapter2 = new SettingsAdapter(getContext(), menu, vehicleModel, touch, display, fuel);
         }
         else {
 
-            settingsAdapter2 = new SettingsAdapter2(getContext(), menu, vehicleModel, touch, display, false);
+            settingsAdapter2 = new SettingsAdapter(getContext(), menu, vehicleModel, touch, display, false);
         }
         LinearLayoutManager mLayoutManager=new LinearLayoutManager(getActivity());
         nRecycler.setLayoutManager(mLayoutManager);

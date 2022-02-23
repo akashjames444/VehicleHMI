@@ -57,8 +57,11 @@ public class Keypad extends AppCompatActivity implements View.OnClickListener {
 
         ButtonDone.setVisibility(View.INVISIBLE);
 
-//      OnClick for Backspace button
 
+        /**
+
+         * @brief   OnClick for Backspace button
+         */
         imgBtnClear.setOnClickListener(v -> {
             StringBuilder stringBuilder = new StringBuilder(editText1.getText());
             if (stringBuilder.length() > 0) {
@@ -67,19 +70,33 @@ public class Keypad extends AppCompatActivity implements View.OnClickListener {
             editText1.setText(stringBuilder.toString());
         });
 
-//      onClick for page close button
+
+
 
         imgBtnClose.setOnClickListener(new View.OnClickListener() {
+            /**
+             * @param v
+             * @brief onClick for page close button
+             */
             @Override
             public void onClick(View v) {
+
                 finish();
             }
         });
 
-//      This is to enable the DONE button if the value entered is in correct range
-//      else DONE button will be disabled
+
 
         editText1.addTextChangedListener(new TextWatcher() {
+            /**
+             *
+             * @param s
+             * @param start
+             * @param count
+             * @param after
+             * @brief This is to enable the DONE button if the value entered is in correct range
+             *        else DONE button will be disabled
+             */
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -116,7 +133,9 @@ public class Keypad extends AppCompatActivity implements View.OnClickListener {
 
     }
 
-//  Separate method created for casting in onCreate
+    /**
+     * @brief   Separate method created for casting in onCreate
+     */
 
     private void get_Casting() {
 
@@ -141,8 +160,11 @@ public class Keypad extends AppCompatActivity implements View.OnClickListener {
         imgBtnClose = findViewById(R.id.imageButton_close);
     }
 
-//  Method used for setting the specific range and the target values in respective textView
+//
 
+    /** @param rbVal
+     * @brief  Method used for setting the specific range and the target values in respective textView
+     */
     @SuppressLint("SetTextI18n")
     private void textViewSetter(int rbVal) {
 
@@ -161,9 +183,12 @@ public class Keypad extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-//  Method created for onClick of DONE button
-//  when clicked respective value will be updated in database and also target value textView will be updated
 
+
+    /**
+     * @brief  Method created for onClick of DONE button
+     *           when clicked respective value will be updated in database and also target value textView will be updated
+     */
     private void DoneButton() {
 
         ButtonDone.setVisibility(View.VISIBLE);
@@ -192,8 +217,10 @@ public class Keypad extends AppCompatActivity implements View.OnClickListener {
 
     }
 
-
-//  onClick for keypad buttons
+    /**
+     * @param v
+     * @brief onClick for keypad buttons
+     */
 
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     @Override
@@ -240,5 +267,3 @@ public class Keypad extends AppCompatActivity implements View.OnClickListener {
 
 
 }
-
-

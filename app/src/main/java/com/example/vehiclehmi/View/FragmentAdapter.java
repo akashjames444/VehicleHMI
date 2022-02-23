@@ -17,12 +17,12 @@ public class FragmentAdapter extends FragmentStateAdapter {
 
         switch (position){
             case 0:
-                return new SetingsFragment();
+                return new SettingsFragment();
             case 1:
                 return  new ControlFragment();
         }
 
-        return new SetingsFragment();
+        return new SettingsFragment();
     }
 
     @Override

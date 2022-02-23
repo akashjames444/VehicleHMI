@@ -3,8 +3,8 @@ package com.example.vehiclehmi.Presenter;
 import com.example.vehiclehmi.Model.Model;
 import com.example.vehiclehmi.View.ControlFragment;
 import com.example.vehiclehmi.View.Keypad;
-import com.example.vehiclehmi.View.SettingsAdapter2;
-import com.example.vehiclehmi.View.SetingsFragment;
+import com.example.vehiclehmi.View.SettingsAdapter;
+import com.example.vehiclehmi.View.SettingsFragment;
 import com.example.vehiclehmi.View.TrailerTire;
 
 public class Presenter implements IPresenter{
@@ -14,9 +14,9 @@ public class Presenter implements IPresenter{
 
     TrailerTire trailerTire;
     Keypad keypad;
-    SetingsFragment settingsFragment;
+    SettingsFragment settingsFragment;
     ControlFragment controlFragment;
-    SettingsAdapter2 settingsAdapter;
+    SettingsAdapter settingsAdapter;
     Presenter presenter;
 
     public Presenter(TrailerTire trailerTire) {
@@ -30,7 +30,7 @@ public class Presenter implements IPresenter{
 
     }
 
-    public Presenter(SetingsFragment settingsFragment) {
+    public Presenter(SettingsFragment settingsFragment) {
         this.settingsFragment=settingsFragment;
         model = new Model(presenter);
     }
@@ -39,7 +39,7 @@ public class Presenter implements IPresenter{
         this.controlFragment = controlFragment;
         model = new Model(presenter);
     }
-    public Presenter(SettingsAdapter2 settingsAdapter) {
+    public Presenter(SettingsAdapter settingsAdapter) {
         this.settingsAdapter = settingsAdapter;
         model = new Model(presenter);
     }

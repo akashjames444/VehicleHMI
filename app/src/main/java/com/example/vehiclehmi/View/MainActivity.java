@@ -6,10 +6,6 @@
 package com.example.vehiclehmi.View;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -21,8 +17,11 @@ import android.os.IBinder;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.example.vehiclehmi.R;
-import com.example.vehiclehmi.View.FragmentAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         pager2=findViewById(R.id.view_pager2);
         relativeProgress = findViewById(R.id.relative_progress);
 
-//      relativeProgress is progressbar for showing loading till service connection
 
         relativeProgress.setVisibility(View.VISIBLE);
 
@@ -60,7 +58,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//  This function binds HMI with Service through Aidl
+
+    /**
+     * @brief Method used to bind HMI with Service app using AIDL
+     */
 
     private void bindToAIDLService() {
 
@@ -88,7 +89,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-//  This function is used to set the fragments when service is connected
+
+    /**
+     * @brief Method used to set the fragments when service is connected
+     */
 
     private void fragmentSetter() {
 
