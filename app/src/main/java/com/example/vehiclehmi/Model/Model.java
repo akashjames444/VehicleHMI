@@ -4,6 +4,9 @@ import android.os.RemoteException;
 
 import com.example.vehiclehmi.Presenter.IPresenter;
 import com.example.vehiclehmi.View.MainActivity;
+import com.example.vehiclehmi.utilities.AidlClass;
+
+import ServicePackage.aidlInterface;
 
 public class Model implements IModel{
 
@@ -21,7 +24,7 @@ public class Model implements IModel{
     public int menuClick(String id, int value) {
         int value1 = 0;
         try {
-            value1 = MainActivity.getAidl().menuClick(id,value);
+            value1 = AidlClass.getInstance().get().menuClick(id,value);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -32,7 +35,7 @@ public class Model implements IModel{
     public String vehicleModel() {
         String value = null;
         try {
-            value = MainActivity.getAidl().vehicleModel();
+            value = AidlClass.getInstance().get().vehicleModel();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -42,7 +45,7 @@ public class Model implements IModel{
     @Override
     public void updateValues(String id, int value) {
         try {
-            MainActivity.getAidl().updateValues(id, value );
+            AidlClass.getInstance().get().updateValues(id, value );
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -52,7 +55,7 @@ public class Model implements IModel{
     @Override
     public void updateControl(String column, int value) {
         try {
-            MainActivity.getAidl().updateControl(column, value );
+            AidlClass.getInstance().get().updateControl(column, value );
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -62,7 +65,7 @@ public class Model implements IModel{
     public int getTarget() {
         int value = 0;
         try {
-            value = MainActivity.getAidl().getTarget();
+            value = AidlClass.getInstance().get().getTarget();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -73,7 +76,7 @@ public class Model implements IModel{
     public int getValue(String menu) {
         int value = 0;
         try {
-            value = MainActivity.getAidl().getValue(menu);
+            value = AidlClass.getInstance().get().getValue(menu);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -84,7 +87,7 @@ public class Model implements IModel{
     public int getDisplay() {
         int value = 0;
         try {
-            value = MainActivity.getAidl().getDisplay();
+            value = AidlClass.getInstance().get().getDisplay();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -94,11 +97,17 @@ public class Model implements IModel{
     @Override
     public void updateDisplay(int value) {
         try {
-            MainActivity.getAidl().updateDisplay(value);
+            AidlClass.getInstance().get().updateDisplay(value);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void setAidl(aidlInterface MyAidlInterface) {
+
+        AidlClass.getInstance().set(MyAidlInterface);
     }
 
 

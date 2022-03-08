@@ -1,5 +1,7 @@
 package com.example.vehiclehmi.Model;
 
+import ServicePackage.aidlInterface;
+
 public interface IModel {
     int menuClick(String id ,int value);
 
@@ -16,5 +18,7 @@ public interface IModel {
     int getDisplay();
 
     void updateDisplay(int value);
+
+    void setAidl(aidlInterface MyAidlInterface);
 
 }

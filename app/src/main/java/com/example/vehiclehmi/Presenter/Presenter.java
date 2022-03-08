@@ -3,21 +3,29 @@ package com.example.vehiclehmi.Presenter;
 import com.example.vehiclehmi.Model.Model;
 import com.example.vehiclehmi.View.ControlFragment;
 import com.example.vehiclehmi.View.Keypad;
+import com.example.vehiclehmi.View.MainActivity;
 import com.example.vehiclehmi.View.SettingsAdapter;
 import com.example.vehiclehmi.View.SettingsFragment;
 import com.example.vehiclehmi.View.TrailerTire;
+
+import ServicePackage.aidlInterface;
 
 public class Presenter implements IPresenter{
 
     Model model;
 
-
+    MainActivity mainActivity;
     TrailerTire trailerTire;
     Keypad keypad;
     SettingsFragment settingsFragment;
     ControlFragment controlFragment;
     SettingsAdapter settingsAdapter;
     Presenter presenter;
+
+    public Presenter(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+        model = new Model(presenter);
+    }
 
     public Presenter(TrailerTire trailerTire) {
         this.trailerTire = trailerTire;
@@ -75,7 +83,7 @@ public class Presenter implements IPresenter{
 
     @Override
     public void updateValues(String id, int value) {
-       model.updateValues(id,value);
+        model.updateValues(id,value);
     }
 
     @Override
@@ -85,12 +93,13 @@ public class Presenter implements IPresenter{
 
     @Override
     public int menuClick(String id, int value) {
-       return model.menuClick(id,value);
+        return model.menuClick(id,value);
     }
 
-
-    //public int value(String menu){ return model.getValue(menu);}
-    //public String model(){return model.getValue(menu);}
+    @Override
+    public void setAidl(aidlInterface MyaidlInterface) {
+        model.setAidl(MyaidlInterface);
+    }
 
 
 }

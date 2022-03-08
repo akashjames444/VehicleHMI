@@ -167,7 +167,6 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             /**
                              * notifyItemChanged() is used  for enabling or disabling the HlOn and HlOff menu based on return value
                              */
-
                             display = true;
                             int pos = viewHolderOne.getAdapterPosition();
                             int HlOnPos = pos + 1;

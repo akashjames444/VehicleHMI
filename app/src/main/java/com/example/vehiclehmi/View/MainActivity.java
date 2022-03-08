@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.vehiclehmi.Presenter.Presenter;
 import com.example.vehiclehmi.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     FragmentAdapter adapter;
     private RelativeLayout relativeProgress;
 
-    static aidlInterface aidlObject = null;
+    static aidlInterface aidlObject;
+    Presenter presenter;
 
 
 
@@ -47,13 +49,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout=findViewById(R.id.tab_layout);
         pager2=findViewById(R.id.view_pager2);
         relativeProgress = findViewById(R.id.relative_progress);
+        presenter = new Presenter(this);
 
 
         relativeProgress.setVisibility(View.VISIBLE);
 
-        if (aidlObject == null) {
-            bindToAIDLService();
-        }
+        bindToAIDLService();
 
 
     }
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
 
             aidlObject = aidlInterface.Stub.asInterface(service);
+            presenter.setAidl(aidlObject);
 
             relativeProgress.setVisibility(View.INVISIBLE);
 
@@ -127,6 +129,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * @param implicitIntent intent which is to converted into explicit
+     * @param context context
+     * @return the explicit version of the intent
+     * @brief method to convert implicit to explicit intent.
+     */
 
     public static Intent implicitIntentToExplicitIntent(Intent implicitIntent, Context context) {
         PackageManager pm = context.getPackageManager();
